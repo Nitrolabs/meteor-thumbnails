@@ -23,6 +23,13 @@ Thumbnails.pdf = function(imageTag,url,options){
   }
   options = _.extend({},defaults,options)
 
+  // Warn users about pdf.js
+  if (typeof PDFJS !== 'undefined') {
+    console.log("Thumbnails requires a working version of pdf.js to be available on the client");
+    console.log("We explicitly included pdf.js in the dependencies, because you may have already included it");
+    console.log("Run `Meteor install pascoual:pdfjs` to fix this error");
+    throw new Error("A working version of PDF.js must be available on the client")
+  }
 
   function _getThumbnailViewport(page){
     // Get a correctly scaled pdfjs viewport for thumbnail creation

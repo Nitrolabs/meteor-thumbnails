@@ -1,11 +1,12 @@
 Package.describe({
   name: 'maxkferg:thumbnails',
-  version: '0.0.2',
+  version: '0.1.0',
   summary: 'Create and cache thumbnails on the client',
   git: 'https://github.com/NitroLabs/meteor-thumbnails',
   documentation: 'README.md'
 });
 
+/*
 function isPDFJS(){
   // Return True is PDFJS is used somewhere in this project
   // This avoids requiring any specific pdf.js package
@@ -19,6 +20,7 @@ function isPDFJS(){
     return false;
   }
 }
+*/
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
@@ -27,11 +29,7 @@ Package.onUse(function(api) {
   api.export('Thumbnails','client');
   api.use('amplify@1.0.0','client');
   api.use('sha','client');
-
-  if (!isPDFJS()){
-    console.log('Using pascoual:pdfjs');
-    api.use('pascoual:pdfjs@1.1.114','client');
-  }
+  //api.use('pascoual:pdfjs@1.1.114','client');
 });
 
 Package.onTest(function(api) {
