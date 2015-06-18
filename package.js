@@ -1,6 +1,6 @@
 Package.describe({
   name: 'maxkferg:thumbnails',
-  version: '0.1.1',
+  version: '0.1.2',
   summary: 'Create and cache thumbnails on the client',
   git: 'https://github.com/NitroLabs/meteor-thumbnails',
   documentation: 'README.md'
