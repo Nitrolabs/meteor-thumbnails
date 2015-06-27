@@ -16,7 +16,6 @@ Thumbnails = {}
  */
 Thumbnails.pdf = function(imageTag,url,options){
   var self = this;
-  var cache = amplify.store;
   var defaults = {
     'page':1,
     'cache':true
@@ -43,7 +42,6 @@ Thumbnails.pdf = function(imageTag,url,options){
     }
     return page.getViewport(scale);
   }
-
 
   function _getThumbnailSrc(url,callback){
     // Pass a base64 encoded thumbnail to callback
@@ -77,17 +75,46 @@ Thumbnails.pdf = function(imageTag,url,options){
     });
   }
 
+  function _storeThumbnail(url,data){
+    // Store thumbnail data in the cache
+    // Remove old records if the cache is full
+    var hash = _getCacheKey(url);
+    try {
+      amplify.store(hash,data)
+    } catch (error) {
+      var objects = amplify.store();
+      var expired = _.chain(objects).invert().find(function(data,hash){
+        // Version 0.1.3 only
+        // TODO: Uncomment this code after the new thumbnail- prefix
+        // is being used in most browser caches
+        // return hash.startsWith('thumbnail')
+        return true;
+      }).value();
+      
+      if (expired){
+        amplify.store(expired,null);
+        _storeThumbnail(url,data);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  function _getCacheKey(url){
+    // Return the cache key fo the given url
+    return "thumnail-"+SHA256(url);
+  }
 
   function _getCachedThumbnail(url,callback){
     // Pass a base64 encoded thumbnail to the callback
     // The img will be fetched from the cache if it is available
-    var hash = SHA256(url);
-    var data = cache(hash);
+    var hash = _getCacheKey(url);
+    var data = amplify.store(hash);
     if (data && options.cache){
       callback(data);
     } else {
       _getThumbnailSrc(url,function(data){
-        cache(hash,data);
+        _storeThumbnail(hash,data);
         callback(data);
       });
     }

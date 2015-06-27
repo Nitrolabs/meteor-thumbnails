@@ -1,6 +1,6 @@
 Package.describe({
   name: 'maxkferg:thumbnails',
-  version: '0.1.2',
+  version: '0.1.3',
   summary: 'Create and cache thumbnails on the client',
   git: 'https://github.com/NitroLabs/meteor-thumbnails',
   documentation: 'README.md'
@@ -28,6 +28,7 @@ Package.onUse(function(api) {
   api.addFiles('thumbnails-server.js','server');
   api.export('Thumbnails','client');
   api.use('amplify@1.0.0','client');
+  api.use('underscore','client');
   api.use('sha','client');
   //api.use('pascoual:pdfjs@1.1.114','client');
 });
